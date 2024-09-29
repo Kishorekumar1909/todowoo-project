@@ -11,3 +11,4 @@ def signupuser(request):
             user = User.objects.create_user(request.POST["username"],password = request.POST["password1"])
         else:
             print("invalid")
+            print("hello")
