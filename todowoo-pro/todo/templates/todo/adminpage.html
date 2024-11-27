@@ -1,0 +1,26 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+ <script>alert("{{ message | safe }}")</script>
+ 
+{% endfor %}
+
+{% endif %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <h1>Admin Page</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="list-group">
+                {% for todo in todos %}
+                    <a class="list-group-item list-group-item-action{% if todo.important %} list-group-item-danger{% endif %}"><b>{{ todo.title }}</b> Created by {{ todo.user }} on {{ todo.created|date:'M j Y H:i' }} {% if toto.datecompletd %}- Completed {{ todo.datecompleted|date:'M j Y H:i' }} {% endif %}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

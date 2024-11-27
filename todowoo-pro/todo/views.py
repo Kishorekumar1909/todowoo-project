@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
 from .models import Todo
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from .decorators import adminonly, useronly
+
 
 def home(request):
     return render(request, 'todo/home.html')
@@ -18,6 +21,8 @@ def signupuser(request):
         if request.POST['password1'] == request.POST['password2']:
             try:
                 user = User.objects.create_user(request.POST["username"],password = request.POST["password1"])
+                group = Group.objects.get(name="site_users")
+                user.groups.add(group)
                 user.save()
                 login(request,user)
                 return redirect('current')
@@ -35,6 +40,9 @@ def loginuser(request):
             return render(request, 'todo/loginuser.html', {'form' : AuthenticationForm(), 'error': "Password is wrong"})
         else:
             login(request,user)
+            if request.user.is_superuser:
+                #login(request,user)
+                return redirect('admin')
             return redirect('current')
 @login_required
 def logoutuser(request):
@@ -43,6 +51,7 @@ def logoutuser(request):
         return redirect('home')
     
 @login_required
+@useronly
 def createtodos(request):
     if request=="GET":
         return render(request, 'todo/createtodos.html', {'form' : TodoForm()})
@@ -55,16 +64,18 @@ def createtodos(request):
             return redirect('current')
 
         except ValueError:
-            return render(request, 'todo/createtodos.html', {'form' : TodoForm(), "error":" You Entered Bad Text"})
+            return render(request, 'todo/createtodos.html', {'form' : TodoForm(), "error":ValueError})
 
 #@login_required
+@useronly
 def current(request):
-    todos = Todo.objects.filter(user= request.user, completed__isnull = True)
+    todos = Todo.objects.filter(user= request.user, datecompleted__isnull = True)
     return render(request, 'todo/currentpage.html', {'todos': todos})
 
 @login_required
+@useronly
 def completed(request):
-    todos = Todo.objects.filter(user= request.user, completed__isnull = False).order_by('-completed')
+    todos = Todo.objects.filter(user= request.user, datecompleted__isnull = False).order_by('-datecompleted')
     return render(request, 'todo/completed.html', {'todos': todos})
 
 @login_required
@@ -82,7 +93,7 @@ def viewtodo(request, todo_pk):
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk= todo_pk, user= request.user)
     if request.method == "POST":
-        todo.completed = timezone.now()
+        todo.datecompleted = timezone.now()
         todo.save()
         return redirect('current')
 
@@ -93,4 +104,9 @@ def deletetodo(request, todo_pk):
         #todo.completed = timezone.now()
         todo.delete()
         return redirect('current')
+@login_required  
+@adminonly
+def adminpage(request):
+    todo = Todo.objects.all
+    return render(request, 'todo/adminpage.html', {'todos':todo})
 
