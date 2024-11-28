@@ -10,7 +10,7 @@
   * [Admin Login](#Admin-Login)
 
   
-## Problem Statment
+## Project Overview
 
 Todowoo is a robust task management application designed with role-based access control (RBAC) to separate user functionalities:
 
@@ -28,8 +28,8 @@ Todowoo is a robust task management application designed with role-based access 
 
 ## Technologies
 
-* Backend: Python, Django
-* Frontend: HTML, CSS, Bootstrap
+* Backend: Python, Django,SQLite.
+* Frontend: HTML, CSS, Bootstrap.
   
   
   
@@ -59,8 +59,8 @@ after Step 3 in above instruction
 python manage.py createsuperuser
 ``` 
 **step-3.2** 
-
-* Enter username 
+Enter
+* username 
 * Password 
 * Email Id<br>
 
