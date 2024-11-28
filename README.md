@@ -8,6 +8,7 @@
   * [Technologies](#Technologies)
   * [How to run the project](#How-to-run)
   * [Admin Login](#Admin-Login)
+  * [Screenshots](#screenshots)
 
   
 ## Project Overview
