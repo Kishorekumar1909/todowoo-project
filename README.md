@@ -59,8 +59,8 @@ after Step 3 in above instruction
 python manage.py createsuperuser
 ``` 
 **step-3.2** 
-
-* Enter username 
+Enter
+* username 
 * Password 
 * Email Id<br>
 
