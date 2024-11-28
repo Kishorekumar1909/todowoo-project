@@ -11,10 +11,10 @@ def adminonly(view_func):
             if group == "site_users":
                 messages.warning(request, 'You cant acess this page')
                 return redirect('current')
-            if request.user.is_superuser:
-                messages.info(request,None)
-                print("dec")
-                return view_func(request, *args, **kwargs)
+        if request.user.is_superuser:
+            messages.info(request,None)
+            print("dec")
+            return view_func(request, *args, **kwargs)
         print(group)
     return wrapper_function
 
@@ -26,8 +26,8 @@ def useronly(view_func):
             
             if group == "site_users":
                 return view_func(request, *args, **kwargs)
-            if request.user.is_superuser:
-                messages.warning(request, "You cant acess this page")
-                return redirect('admin')
-        #print(group)
+        if request.user.is_superuser:
+            messages.warning(request, "You cant acess this page")
+            return redirect('admin')
+        print(group)
     return wrapper_function
