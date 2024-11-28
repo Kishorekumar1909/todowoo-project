@@ -28,8 +28,8 @@ Todowoo is a robust task management application designed with role-based access 
 
 ## Technologies
 
-* Backend: Python, Django
-* Frontend: HTML, CSS, Bootstrap
+* Backend: Python, Django,SQLite.
+* Frontend: HTML, CSS, Bootstrap.
   
   
   
